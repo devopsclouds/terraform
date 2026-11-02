@@ -72,7 +72,7 @@ resource "aws_instance" "web" {
   vpc_security_group_ids      = [aws_security_group.nginx_sg.id]
   associate_public_ip_address = true
 
-  user_data = file(somedata.sh)
+  user_data = file("somedata.sh")
 
   tags = {
     Name = var.instance_name

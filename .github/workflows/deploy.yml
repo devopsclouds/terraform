@@ -1,20 +1,18 @@
-name: 'Terraform Deploy EC2 Nginx'
+name: 'Terraform Deploy EC2Nginx'
 
 on:
   push:
     branches:
       - main
 
-# Required for checking out code
-
 jobs:
   terraform:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
-  
-  permissions:
-      id-token: write
-      contents: read
+
+    permissions:
+      id-token: write   # Required for requesting the OIDC JWT token
+      contents: read    # Required for checking out code
 
     steps:
       # 1. Checkout repository code
@@ -27,6 +25,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::702828429997:role/GitHubActionsTerraformEC2Role
           aws-region: us-east-1
+          audience: sts.amazonaws.com
 
       # 3. Setup Terraform CLI version
       - name: Setup Terraform
@@ -43,5 +42,5 @@ jobs:
         run: terraform plan
 
       # 6. Apply infrastructure changes
-      #- name: Terraform Apply
-      #  run: terraform apply -auto-approve
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
